@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{~/css/global.css}">
+    <link rel="stylesheet" th:href="@{~/css/range.css}">
+    <title>Easy Parking</title>
+</head>
+<body>
+    <header>
+        <h1>Easy Parking</h1>
+        <div class="login">
+            <span class="header-info">Usuário:</span>
+            <span sec:authentication="principal.name"></span>
+            <span class="header-info">Minhas Vagas Livres:</span>
+            <span sec:authentication="principal.mySpaces"></span>
+            <a href="/logout"><span class="material-icons">logout</span></a>
+        </div>
+    </header>
+    
+    <main class="cards">
+        <div class="card lg">
+            <h2>Cadastrar Vaga</h2>
+            <form class="vertical-form" action="/parkingspace" method="POST" th:object="${parkingSpace}">
+                <input type="hidden" th:field="${parkingSpace.id}" id="id">
+                <input type="hidden" th:field="${parkingSpace.isEmpty}" id="isEmpty">
+                <input type="hidden" th:field="${parkingSpace.car}" id="user">
+                <input type="hidden" th:field="${parkingSpace.parkingLot}" id="parkingLot">
+                <input 
+                    placeholder="Nome da Vaga" 
+                    type="text" 
+                    id="name" 
+                    th:field="*{name}"
+                    th:classappend="${#fields.hasErrors('name')}?invalid"
+                >
+                <span th:errors="*{name}"></span>
+                
+                <input 
+                    placeholder="Andar da Vaga" 
+                    type="number" 
+                    id="floor" 
+                    th:field="*{floor}"
+                    th:classappend="${#fields.hasErrors('floor')}?invalid"
+                >
+                <span th:errors="*{floor}"></span>
+
+                <input 
+                    placeholder="Nome do Estacionamento" 
+                    type="text" 
+                    id="parkingName" 
+                    th:field="*{parkingLot.name}"
+                >
+
+                <input 
+                    placeholder="Placa do Carro" 
+                    type="text" 
+                    id="licensePlate" 
+                    th:field="*{car.licensePlate}"
+                >
+
+                <div class="buttons">
+                    <a href="/parkinglot" class="cancel">cancelar</a>
+                    <input class="register" type="submit" value="cadastrar">
+                </div>
+            </form>
+        </div>
+    </main>
+    </body>
+</html>

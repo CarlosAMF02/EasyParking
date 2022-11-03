@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{~/css/global.css}">
+    <link rel="stylesheet" th:href="@{~/css/range.css}">
+    <title>Easy Parking</title>
+</head>
+<body>
+    <header>
+        <h1>Easy Parking</h1>
+        <div class="login">
+            <span class="header-info">Usuário:</span>
+            <span sec:authentication="principal.name"></span>
+            <span class="header-info">Minhas Vagas Livres:</span>
+            <span sec:authentication="principal.mySpaces"></span>
+            <a href="/logout"><span class="material-icons">logout</span></a>
+        </div>
+    </header>
+    
+    <main class="cards">
+        <div class="card lg">
+            <h2>Cadastrar Carro</h2>
+            <form class="vertical-form" action="/car" method="POST" th:object="${car}">
+                <input type="hidden" th:field="${car.id}" id="id">
+                <input 
+                    placeholder="Marca do Carro" 
+                    type="text" 
+                    id="brand" 
+                    th:field="*{brand}"
+                    th:classappend="${#fields.hasErrors('brand')}?invalid"
+                >
+                <span th:errors="*{brand}"></span>
+
+                <input 
+                    placeholder="Modelo do Carro" 
+                    type="text" 
+                    id="model" 
+                    th:field="*{model}"
+                    th:classappend="${#fields.hasErrors('model')}?invalid"
+                >
+                <span th:errors="*{model}"></span>
+                
+                <input 
+                    placeholder="Cor do Carro" 
+                    type="text" 
+                    id="color" 
+                    th:field="*{color}"
+                    th:classappend="${#fields.hasErrors('color')}?invalid"
+                >
+                <span th:errors="*{color}"></span>
+
+                <input 
+                    placeholder="Placa do Carro" 
+                    type="text" 
+                    id="licensePlate" 
+                    th:field="*{licensePlate}"
+                    th:classappend="${#fields.hasErrors('licensePlate')}?invalid"
+                >
+                <span th:errors="*{licensePlate}"></span>
+
+                <div class="buttons">
+                    <a href="/car" class="cancel">cancelar</a>
+                    <input class="register" type="submit" value="cadastrar">
+                </div>
+            </form>
+        </div>
+    </main>
+    </body>
+</html>

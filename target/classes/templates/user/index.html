@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{~/css/global.css}">
+    <title>Epic Task</title>
+</head>
+<body>
+    <header>
+        <h1>Easy Parking</h1>
+        <div class="login">
+            <span class="header-info">Usuário:</span>
+            <span sec:authentication="principal.name"></span>
+            <span class="header-info">Minhas Vagas Livres:</span>
+            <span sec:authentication="principal.mySpaces"></span>
+            <a href="/logout"><span class="material-icons">logout</span></a>
+        </div>
+    </header>
+
+
+    <div class="toolbar">
+        <a class="button" href="/parkinglot" sec:authorize-url="POST /parkingspace">Voltar ao Menu</a>
+        <a class="button" href="/user/new" sec:authorize-url="POST /task">Cadastrar Usuário</a>
+    </div>
+
+    <div class="alert success" th:if="${message != null}">
+        <span th:text="${message}"></span>
+    </div>
+
+    <main class="cards">
+        <div class="card animated" th:each="user : ${users}">
+            <div class="card-info">
+                <h2 class="card-description">Nome do Usuário: </h2>
+                <h2 th:text="${user.name}"></h2>
+            </div>
+
+            <div class="card-info">
+                <h2 class="card-description">E-mail do Usuário: </h2>
+                <h2 th:text="${user.email}"></h2>
+            </div>
+            
+            
+            <div class="actions">
+                <a class="action-delete" th:href="${'/user/delete/' + user.id}" sec:authorize="hasRole('ADMIN')">
+                    <span class="material-icons">delete</span>
+                </a>
+                <a class="action-edit" th:href="${'/user/' + user.id}">
+                    <span class="material-icons" sec:authorize="hasRole('ADMIN')">edit</span>
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

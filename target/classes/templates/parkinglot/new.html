@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{~/css/global.css}">
+    <link rel="stylesheet" th:href="@{~/css/range.css}">
+    <title>Easy Parking</title>
+</head>
+<body>
+    <header>
+        <h1>Easy Parking</h1>
+        <div class="login">
+            <span class="header-info">Usuário:</span>
+            <span sec:authentication="principal.name"></span>
+            <span class="header-info">Minhas Vagas Livres:</span>
+            <span sec:authentication="principal.mySpaces"></span>
+            <a href="/logout"><span class="material-icons">logout</span></a>
+        </div>
+    </header>
+    
+    <main class="cards">
+        <div class="card lg">
+            <h2>Cadastrar Estacionamento</h2>
+            <form class="vertical-form" action="/parkinglot" method="POST" th:object="${parkingLot}">
+                <input type="hidden" th:field="${parkingLot.id}" id="id">
+                <input type="hidden" th:field="${parkingLot.user}" id="user">
+                <input 
+                    placeholder="Nome do Estacionamento" 
+                    type="text" 
+                    id="name" 
+                    th:field="*{name}"
+                    th:classappend="${#fields.hasErrors('name')}?invalid"
+                >
+                <span th:errors="*{name}"></span>
+                
+                <input 
+                    placeholder="Endereço do Estacionamento" 
+                    type="text" 
+                    id="address" 
+                    th:field="*{address}"
+                    th:classappend="${#fields.hasErrors('address')}?invalid"
+                >
+                <span th:errors="*{address}"></span>
+
+                <div class="buttons">
+                    <a href="/parkinglot" class="cancel">cancelar</a>
+                    <input class="register" type="submit" value="cadastrar">
+                </div>
+            </form>
+        </div>
+    </main>
+    </body>
+</html>
