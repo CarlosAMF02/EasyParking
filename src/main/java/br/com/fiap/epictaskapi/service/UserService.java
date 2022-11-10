@@ -1,5 +1,6 @@
 package br.com.fiap.epictaskapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.fiap.epictaskapi.model.Role;
 import br.com.fiap.epictaskapi.model.User;
 import br.com.fiap.epictaskapi.repository.UserRepository;
 
@@ -24,6 +26,22 @@ public class UserService {
 
     public List<User> listAll() {
         return userRepository.findAll();
+    }
+
+    public List<User> listAllNotAdmin() {
+        List<User> commonUsers = new ArrayList<>();
+        List<User> users = listAll();
+
+        for (User user : users) {
+            for (Role role : user.getRoles()) {
+                if (role.getName().contains("ROLE_ADMIN")) {
+                    continue;
+                }
+                commonUsers.add(user);
+            }
+        }
+
+        return commonUsers;
     }
 
     public void save(User user) {

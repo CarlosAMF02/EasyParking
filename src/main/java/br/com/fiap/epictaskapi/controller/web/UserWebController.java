@@ -24,7 +24,7 @@ public class UserWebController {
 
     @GetMapping
     public ModelAndView index(){
-        return new ModelAndView("user/index").addObject("users", userService.listAll());
+        return new ModelAndView("user/index").addObject("users", userService.listAllNotAdmin());
     }
 
     @GetMapping("new")

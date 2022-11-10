@@ -99,6 +99,10 @@ public class User implements UserDetails{
         this.mySpaces = score;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
@@ -127,7 +131,7 @@ public class User implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
-    }
+    } 
 
     @Override
     public String toString() {
