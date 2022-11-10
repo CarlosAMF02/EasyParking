@@ -14,9 +14,10 @@ public class TokenService {
 
     public String createToken(User user){
         Date issuedAt = new Date();
-        Date expiresAt = new Date(issuedAt.getTime() + 60_000);
+        Date expiresAt = new Date(issuedAt.getTime() + 6000000);
         
         return JWT.create()
+            .withSubject(user.getId().toString())
             .withSubject(user.getEmail())
             .withIssuedAt(issuedAt)
             .withExpiresAt(expiresAt)
@@ -26,7 +27,6 @@ public class TokenService {
 
     public boolean valide(String header) {
         // "Basic kadfkjhdflghsdkfugkslduhfgk"
-
         if (header == null || !header.startsWith("Bearer ") || header.isEmpty() ){
             return false;
         }

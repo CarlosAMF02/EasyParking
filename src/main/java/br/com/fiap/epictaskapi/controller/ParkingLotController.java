@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.epictaskapi.controller.DTO.ParkingLotDTO;
 import br.com.fiap.epictaskapi.model.ParkingLot;
+import br.com.fiap.epictaskapi.model.User;
 import br.com.fiap.epictaskapi.service.ParkingLotService;
+import br.com.fiap.epictaskapi.service.UserService;
 
 @RestController
 @RequestMapping("/api/parkinglot")
@@ -29,13 +32,25 @@ public class ParkingLotController {
     @Autowired
     private ParkingLotService service;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping()
     public Page<ParkingLot> index(@PageableDefault(size = 4) Pageable paginacao){
         return service.listAll(paginacao);
     }
 
     @PostMapping()
-    public ResponseEntity<ParkingLot> create(@RequestBody @Valid ParkingLot parkingLot){
+    public ResponseEntity<ParkingLot> create(@RequestBody @Valid ParkingLotDTO parkingLotDTO){
+        User user = userService.getById(parkingLotDTO.getUserId()).orElse(null);
+        if(user == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        ParkingLot parkingLot = new ParkingLot();
+        parkingLot.setName(parkingLotDTO.getName());
+        parkingLot.setAddress(parkingLotDTO.getAddress());
+        parkingLot.setUser(user);
+
         service.save(parkingLot);
         
         return ResponseEntity

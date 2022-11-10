@@ -31,7 +31,6 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
                 
                 .antMatchers(HttpMethod.GET, "/api/user/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user").authenticated()
 
                 .antMatchers(HttpMethod.GET, "/user").authenticated()
                 .antMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")

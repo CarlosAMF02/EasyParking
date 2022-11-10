@@ -21,12 +21,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.epictaskapi.controller.DTO.ParkingSpaceDTO;
+import br.com.fiap.epictaskapi.model.Car;
+import br.com.fiap.epictaskapi.model.ParkingLot;
 import br.com.fiap.epictaskapi.model.ParkingSpace;
+import br.com.fiap.epictaskapi.service.CarService;
+import br.com.fiap.epictaskapi.service.ParkingLotService;
 import br.com.fiap.epictaskapi.service.ParkingSpaceService;
 
 @RestController
 @RequestMapping("/api/parkingspace")
 public class ParkingSpaceController {
+    @Autowired
+    private ParkingLotService parkingLotService;
+
+    @Autowired
+    private CarService carService;
+
     @Autowired
     private ParkingSpaceService service;
     
@@ -41,7 +52,20 @@ public class ParkingSpaceController {
     }
 
     @PostMapping()
-    public ResponseEntity<ParkingSpace> create(@RequestBody @Valid ParkingSpace parkingSpace){
+    public ResponseEntity<ParkingSpace> create(@RequestBody @Valid ParkingSpaceDTO parkingSpaceDTO){
+        ParkingLot parkingLot = parkingLotService.getById(parkingSpaceDTO.getParkingLotId()).orElse(null);
+        Car car = carService.getByLicensePlate(parkingSpaceDTO.getCarPlate()).orElse(null);
+
+        if (parkingLot == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        ParkingSpace parkingSpace = new ParkingSpace();
+
+        parkingSpace.setName(parkingSpaceDTO.getName());
+        parkingSpace.setFloor(parkingSpaceDTO.getFloor());
+        parkingSpace.setEmpty(parkingSpaceDTO.isEmpty());
+        parkingSpace.setParkingLot(parkingLot);
+        parkingSpace.setCar(car);
+
         service.save(parkingSpace);
         
         return ResponseEntity

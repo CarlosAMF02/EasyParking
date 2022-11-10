@@ -19,7 +19,7 @@ public class ParkingSpace {
     @Size(min = 2, max=6, message = "digite um nome entre 2 e 6 caracteres")
     private String name;
 
-    @Min(-10) @Max(100)
+    @Min(0) @Max(100)
     private int floor;
 
     @ManyToOne()
