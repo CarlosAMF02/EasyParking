@@ -33,12 +33,15 @@ public class UserService {
         List<User> users = listAll();
 
         for (User user : users) {
-            for (Role role : user.getRoles()) {
+            List<Role> roles = user.getRoles();
+            if (roles.size() == 0) commonUsers.add(user);
+            for (Role role : roles) {
                 if (role.getName().contains("ROLE_ADMIN")) {
                     continue;
                 }
                 commonUsers.add(user);
             }
+            
         }
 
         return commonUsers;
