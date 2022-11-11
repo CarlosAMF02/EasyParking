@@ -76,14 +76,19 @@ public class ParkingLotController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ParkingLot> update (@PathVariable Long id, @RequestBody @Valid ParkingLot newParkingLot){
+    public ResponseEntity<ParkingLot> update (@PathVariable Long id, @RequestBody @Valid ParkingLotDTO parkingLotDTO){
         Optional<ParkingLot> optional = service.getById(id);
         if(optional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
+        User user = userService.getById(parkingLotDTO.getUserId()).orElse(null);
+        if(user == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
         ParkingLot parkingLot = optional.get();
-        newParkingLot.setId(id);
-        BeanUtils.copyProperties(newParkingLot, parkingLot);
+        parkingLot.setUser(user);
+        parkingLot.setName(parkingLotDTO.getName());
+        parkingLot.setAddress(parkingLotDTO.getAddress());
 
         service.save(parkingLot);
 
