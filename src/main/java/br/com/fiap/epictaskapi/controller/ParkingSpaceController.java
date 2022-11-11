@@ -91,14 +91,22 @@ public class ParkingSpaceController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ParkingSpace> update (@PathVariable Long id, @RequestBody @Valid ParkingSpace newParkingSpace){
+    public ResponseEntity<ParkingSpace> update (@PathVariable Long id, @RequestBody @Valid ParkingSpaceDTO parkingSpaceDTO) {
         Optional<ParkingSpace> optional = service.getById(id);
         if(optional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
+        ParkingLot parkingLot = parkingLotService.getById(parkingSpaceDTO.getParkingLotId()).orElse(null);
+        Car car = carService.getByLicensePlate(parkingSpaceDTO.getCarPlate()).orElse(null);
+    
+        if (parkingLot == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
         ParkingSpace parkingSpace = optional.get();
-        newParkingSpace.setId(id);
-        BeanUtils.copyProperties(newParkingSpace, parkingSpace);
+        parkingSpace.setName(parkingSpaceDTO.getName());
+        parkingSpace.setFloor(parkingSpaceDTO.getFloor());
+        parkingSpace.setEmpty(parkingSpaceDTO.isEmpty());
+        parkingSpace.setParkingLot(parkingLot);
+        parkingSpace.setCar(car);
 
         service.save(parkingSpace);
 
