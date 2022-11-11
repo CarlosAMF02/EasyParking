@@ -17,7 +17,6 @@ public class TokenService {
         Date expiresAt = new Date(issuedAt.getTime() + 6000000);
         
         return JWT.create()
-            .withSubject(user.getId().toString())
             .withSubject(user.getEmail())
             .withIssuedAt(issuedAt)
             .withExpiresAt(expiresAt)
