@@ -19,21 +19,8 @@ public class SecurityConfiguration {
             .httpBasic()
             .and()
             .authorizeHttpRequests()
-                .antMatchers(HttpMethod.GET, "/api/car/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/car").authenticated()
-
-                .antMatchers(HttpMethod.GET, "/api/parkinglot/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/parkinglot").authenticated()
-
-                .antMatchers(HttpMethod.GET, "/api/parkingspace/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/parkingspace").authenticated()
-
-                .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
-                
-                .antMatchers(HttpMethod.GET, "/api/user/**").permitAll()
-
                 .antMatchers(HttpMethod.GET, "/user").authenticated()
-                .antMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/delete/**").hasRole("ADMIN")
 
                 .antMatchers(HttpMethod.GET, "/parkinglot").authenticated()
