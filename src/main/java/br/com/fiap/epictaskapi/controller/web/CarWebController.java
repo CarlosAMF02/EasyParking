@@ -62,7 +62,7 @@ public class CarWebController {
         if (optional.isEmpty()) return new ModelAndView("car/index");
 
         return new ModelAndView("car/new")
-            .addObject("user", optional.get());
+            .addObject("car", optional.get());
     }
     
 }
