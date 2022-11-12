@@ -54,7 +54,7 @@ public class UserWebController {
     public String delete(@PathVariable Long id, RedirectAttributes redirect){
         userService.deleteById(id);
         redirect.addFlashAttribute("message", "Usuário apagado com sucesso");
-        return "redirect:/task";
+        return "redirect:/user";
     }
 
     @GetMapping("{id}")

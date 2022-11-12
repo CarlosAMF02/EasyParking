@@ -63,6 +63,8 @@ header {
 .cards {
     margin: 0 1rem;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card {
@@ -71,6 +73,9 @@ header {
     color: #363636;
     margin: .5rem 1rem;
     padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
 .card-info {
